@@ -1,6 +1,10 @@
 # piClaw
 
-Hardened Raspberry Pi profile for running [OpenClaw](https://openclaw.ai) as a secure, always-on personal AI assistant node.
+Hardened Raspberry Pi profile for running [OpenClaw](https://github.com/openclaw/openclaw) as a secure, always-on personal AI assistant node.
+
+## What Is OpenClaw
+
+[OpenClaw](https://openclaw.ai) is an open-source, self-hosted personal AI assistant ([GitHub](https://github.com/openclaw/openclaw), [docs](https://docs.openclaw.ai), MIT license). It runs a Gateway control plane on your own hardware and connects to the messaging channels you already use — WhatsApp, Telegram, Slack, Discord, Signal, iMessage, Teams, Matrix, and more. Runtime: Node.js >= 22. Default gateway port: 18789, bound to loopback.
 
 ## Warning
 
