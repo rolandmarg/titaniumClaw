@@ -1,8 +1,8 @@
-# piClaw Architecture
+# titaniumClaw Architecture
 
 ## Upstream: OpenClaw
 
-piClaw deploys **[OpenClaw](https://github.com/openclaw/openclaw)** — an open-source, self-hosted personal AI assistant.
+titaniumClaw deploys **[OpenClaw](https://github.com/openclaw/openclaw)** — an open-source, self-hosted personal AI assistant.
 
 | Field | Value |
 |---|---|
@@ -18,67 +18,89 @@ piClaw deploys **[OpenClaw](https://github.com/openclaw/openclaw)** — an open-
 | Config path | `~/.openclaw/openclaw.json` |
 | Workspace path | `~/.openclaw/workspace` |
 
-OpenClaw connects to messaging channels (WhatsApp, Telegram, Slack, Discord, Signal, iMessage, Teams, Matrix, WebChat) and routes them through a single Gateway control plane. The Gateway is the component piClaw deploys and secures on a Raspberry Pi.
+OpenClaw connects to messaging channels (WhatsApp, Telegram, Slack, Discord, Signal, iMessage, Teams, Matrix, WebChat) and routes them through a single Gateway control plane.
 
-## Goals
+## Design
 
-- Run the OpenClaw Gateway reliably on Raspberry Pi hardware.
-- Keep attack surface small by default.
-- Make operations reproducible and observable.
+titaniumClaw is a **platform-agnostic hardening framework** for OpenClaw deployments. It separates concerns into:
 
-## Core Components
+1. **Common layer** (`common/`) — security model, identity isolation, credential lifecycle, install procedures, and audit framework. Shared across all platforms.
+2. **Platform layer** (`platforms/<name>/`) — OS-specific bootstrap, service management, firewall, and hardening. One directory per supported hardware target.
 
-1. **Host OS** (Raspberry Pi OS Lite 64-bit)
-   - Base hardening, package lifecycle, unattended security updates.
-2. **OpenClaw Runtime**
-   - Node.js 22 runtime.
-   - OpenClaw Gateway process (`openclaw gateway --port 18789 --verbose`).
-   - Config at `/var/lib/openclaw/.openclaw/openclaw.json`.
-   - Workspace at `/var/lib/openclaw/.openclaw/workspace`.
-3. **Service Management**
-   - systemd unit with restart policy.
-   - Least-privilege `openclaw` service user.
-4. **Security Controls**
-   - Gateway token auth (env var `OPENCLAW_GATEWAY_TOKEN`).
-   - Loopback bind by default.
-   - UFW firewall rules.
-   - SSH key-only access.
-   - DM pairing (OpenClaw's built-in sender verification).
-5. **Identity Isolation**
-   - Dedicated service email, Discord bot, and API accounts.
-   - No personal credentials or data accessible to OpenClaw.
-   - Filesystem sandboxing via systemd and Linux user permissions.
-6. **Ops Layer**
-   - Structured logs via journald.
-   - Health checks (`openclaw doctor` + custom timer).
-   - Backup + restore workflow.
+```
+                    titaniumClaw
+                    /          \
+              common/        platforms/
+             (shared)      /     |     \
+                         pi/   macmini/  (future)
+                    (piClaw) (miniClaw)
+```
+
+## Common Architecture
+
+All platforms share:
+
+- **OpenClaw Gateway** as the deployed service.
+- **Loopback-only bind** — gateway never listens on a public interface.
+- **Token auth** — every gateway connection requires a strong random token.
+- **Identity isolation** — OpenClaw uses service-owned accounts, never personal.
+- **Credential lifecycle** — create, store, rotate, revoke for all secrets.
+- **Audit framework** — standard pass/fail checks for security verification.
+
+## Platform Architecture
+
+### Raspberry Pi (piClaw)
+
+```
+[Your Mac] ---SSH tunnel---> [Pi: 127.0.0.1:18789]
+                                  |
+                            [systemd unit]
+                                  |
+                            [openclaw gateway]
+                                  |
+                            [openclaw user]
+                            /var/lib/openclaw
+```
+
+- OS: Raspberry Pi OS Lite 64-bit
+- Service: systemd with `ProtectHome`, `ProtectSystem`, `NoNewPrivileges`
+- Firewall: UFW
+- User: dedicated `openclaw` system user
+
+### Mac Mini (miniClaw)
+
+```
+[Your Mac/iPhone] ---SSH/Tailscale---> [Mini: 127.0.0.1:18789]
+                                            |
+                                       [launchd agent]
+                                            |
+                                       [openclaw gateway]
+                                            |
+                                       [dedicated user or sandboxed agent]
+```
+
+- OS: macOS
+- Service: launchd
+- Firewall: macOS Application Firewall or pf
+- User: dedicated macOS user or sandboxed agent
+- Bonus: can run OpenClaw macOS node (voice wake, canvas) on same machine
 
 ## Deployment Modes
 
-- **Local-only mode** (default, v0)
-  - Gateway binds to loopback.
-  - Access through SSH tunnel.
-- **Tailscale mode** (future, optional)
-  - Gateway stays loopback.
-  - Tailscale Serve (tailnet-only) or Funnel (public) handles exposure.
-  - OpenClaw has native Tailscale integration (`gateway.tailscale.mode`).
-- **Reverse-proxy mode** (future, optional)
-  - Gateway still loopback.
-  - Reverse proxy handles TLS/auth boundaries.
-  - Trusted proxy list must be explicit.
+All platforms support:
 
-## Security Baseline
+- **Local-only** (default, v0): gateway on loopback, access via SSH tunnel.
+- **Tailscale** (future): gateway on loopback, Tailscale Serve/Funnel handles exposure. OpenClaw has native Tailscale integration.
+- **Reverse proxy** (future): gateway on loopback, nginx/caddy handles TLS termination.
 
-- Dedicated system user for runtime.
-- Strong random gateway token, rotated on schedule.
-- Secrets stored outside git, file permissions `600`.
-- SSH key-only login, password auth disabled, root login disabled.
-- Unneeded services disabled.
-- UFW firewall with default deny inbound.
-- OpenClaw DM pairing enabled (unknown senders must be approved).
-- Optional YubiKey FIDO2 for SSH (M3b).
+## Security Layers
 
-## Assumptions
-
-- Single-node deployment for v0.
-- Personal usage profile (not multi-tenant).
+```
+Layer 1: Network         — Firewall (default deny) + loopback bind
+Layer 2: Authentication  — SSH key-only + gateway token + DM pairing
+Layer 3: Authorization   — Service user with no shell + filesystem isolation
+Layer 4: Sandboxing      — systemd/launchd hardening directives
+Layer 5: Identity        — Service-owned accounts, no personal data access
+Layer 6: Operations      — Health checks, encrypted backups, credential rotation
+Layer 7: Audit           — Automated verification of all above layers
+```
