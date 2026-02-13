@@ -1,8 +1,8 @@
-# titaniumClaw Architecture
+# titanium Architecture
 
 ## Upstream: OpenClaw
 
-titaniumClaw deploys **[OpenClaw](https://github.com/openclaw/openclaw)** — an open-source, self-hosted personal AI assistant.
+titanium deploys **[OpenClaw](https://github.com/openclaw/openclaw)** — an open-source, self-hosted personal AI assistant.
 
 | Field | Value |
 |---|---|
@@ -22,13 +22,13 @@ OpenClaw connects to messaging channels (WhatsApp, Telegram, Slack, Discord, Sig
 
 ## Design
 
-titaniumClaw is a **platform-agnostic hardening framework** for OpenClaw deployments. It separates concerns into:
+titanium is a **platform-agnostic hardening framework** for OpenClaw deployments. It separates concerns into:
 
 1. **Common layer** (`common/`) — security model, identity isolation, credential lifecycle, install procedures, and audit framework. Shared across all platforms.
 2. **Platform layer** (`platforms/<name>/`) — OS-specific bootstrap, service management, firewall, and hardening. One directory per supported hardware target.
 
 ```
-                    titaniumClaw
+                    titanium
                     /          \
               common/        platforms/
              (shared)      /     |     \

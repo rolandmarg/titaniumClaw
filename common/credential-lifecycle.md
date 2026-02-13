@@ -1,6 +1,6 @@
 # Credential Lifecycle
 
-Every credential used by titaniumClaw follows a defined lifecycle: **create, store, rotate, revoke**. This document defines the process for each phase.
+Every credential used by titanium follows a defined lifecycle: **create, store, rotate, revoke**. This document defines the process for each phase.
 
 ## Credential Inventory
 

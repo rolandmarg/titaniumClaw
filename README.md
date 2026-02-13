@@ -1,4 +1,4 @@
-# titaniumClaw
+# titanium
 
 Hardened deployment profiles for running [OpenClaw](https://github.com/openclaw/openclaw) as a secure, always-on personal AI assistant — on any hardware you own.
 
@@ -6,7 +6,7 @@ Hardened deployment profiles for running [OpenClaw](https://github.com/openclaw/
 
 OpenClaw and agentic AI systems are powerful but immature. Security guardrails, sandboxing, and safety mechanisms are not yet robust across the ecosystem. This project attempts to harden the deployment surface, but it cannot guarantee complete protection against all threat vectors — including ones introduced by the AI agent itself.
 
-This warning applies to titaniumClaw's own agent-driven installation process as well. The playbooks that set up these systems are designed to be executed by AI agents. That means an AI agent will have SSH access to your devices and will run commands on them. Understand what that means before proceeding.
+This warning applies to titanium's own agent-driven installation process as well. The playbooks that set up these systems are designed to be executed by AI agents. That means an AI agent will have SSH access to your devices and will run commands on them. Understand what that means before proceeding.
 
 **Use common sense. Review what the agent does. Limit network exposure. Do not trust any AI system with unsupervised access to sensitive data or critical infrastructure without understanding the risks.**
 
@@ -16,7 +16,7 @@ This warning applies to titaniumClaw's own agent-driven installation process as 
 
 ## Approach: Markdown-First
 
-titaniumClaw does not ship shell scripts, Ansible playbooks, or Terraform configs. All setup, hardening, deployment, and operational procedures are written as **detailed Markdown documents**.
+titanium does not ship shell scripts, Ansible playbooks, or Terraform configs. All setup, hardening, deployment, and operational procedures are written as **detailed Markdown documents**.
 
 - A human can read a document and follow it step by step.
 - An AI agent can read the same document and execute it autonomously.
@@ -27,7 +27,7 @@ titaniumClaw does not ship shell scripts, Ansible playbooks, or Terraform config
 
 ## Platforms
 
-titaniumClaw provides hardened deployment profiles for multiple platforms. Common security practices and procedures are shared; platform-specific steps are separated.
+titanium provides hardened deployment profiles for multiple platforms. Common security practices and procedures are shared; platform-specific steps are separated.
 
 | Platform | Codename | Hardware | Status |
 |---|---|---|---|
@@ -47,7 +47,7 @@ More platforms can be added by creating a new directory under `platforms/` and r
 ## Repository Layout
 
 ```
-titaniumClaw/
+titanium/
   common/
     identity-isolation.md      # Shared identity policy
     security-model.md          # Threat model and security principles

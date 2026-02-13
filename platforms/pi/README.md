@@ -48,7 +48,7 @@ Dedicated `openclaw` system user created via `useradd --system`. No login shell.
 
 ## Common References
 
-This platform extends the shared titaniumClaw documentation:
+This platform extends the shared titanium documentation:
 
 - [Identity Isolation](../../common/identity-isolation.md)
 - [Security Model](../../common/security-model.md)

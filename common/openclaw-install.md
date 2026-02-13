@@ -99,7 +99,7 @@ Full config reference: https://docs.openclaw.ai/gateway/configuration
 - **Loopback bind** by default — gateway only listens on `127.0.0.1`.
 - Run `openclaw doctor` to surface risky or misconfigured DM policies.
 
-See [security-model.md](security-model.md) for the full titaniumClaw security model.
+See [security-model.md](security-model.md) for the full titanium security model.
 
 ## Workspace Structure
 

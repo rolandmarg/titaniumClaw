@@ -1,6 +1,6 @@
 # Audit Framework
 
-The audit framework defines a standard set of pass/fail checks that verify the security and operational state of any titaniumClaw deployment. Each platform extends the common checks with platform-specific ones.
+The audit framework defines a standard set of pass/fail checks that verify the security and operational state of any titanium deployment. Each platform extends the common checks with platform-specific ones.
 
 ## How Audits Work
 

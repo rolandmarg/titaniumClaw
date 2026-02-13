@@ -2,7 +2,7 @@
 
 ## Warning
 
-OpenClaw and agentic AI systems are powerful but immature. Security guardrails, sandboxing, and safety mechanisms are not yet robust across the ecosystem. titaniumClaw attempts to harden the deployment surface, but it cannot guarantee complete protection against all threat vectors — including ones introduced by the AI agent itself.
+OpenClaw and agentic AI systems are powerful but immature. Security guardrails, sandboxing, and safety mechanisms are not yet robust across the ecosystem. titanium attempts to harden the deployment surface, but it cannot guarantee complete protection against all threat vectors — including ones introduced by the AI agent itself.
 
 **Use common sense. Review what the agent does. Limit network exposure. Do not trust any AI system with unsupervised access to sensitive data or critical infrastructure without understanding the risks.**
 

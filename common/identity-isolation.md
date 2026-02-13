@@ -1,6 +1,6 @@
 # Identity Isolation
 
-OpenClaw runs as a **sandboxed service identity** — completely separate from your personal identity. This is a core security principle across all titaniumClaw platforms.
+OpenClaw runs as a **sandboxed service identity** — completely separate from your personal identity. This is a core security principle across all titanium platforms.
 
 ## Principle
 

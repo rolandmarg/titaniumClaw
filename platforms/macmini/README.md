@@ -62,7 +62,7 @@ The dedicated user approach provides stronger isolation.
 
 ## Common References
 
-This platform extends the shared titaniumClaw documentation:
+This platform extends the shared titanium documentation:
 
 - [Identity Isolation](../../common/identity-isolation.md)
 - [Security Model](../../common/security-model.md)

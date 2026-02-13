@@ -1,4 +1,4 @@
-# titaniumClaw Roadmap
+# titanium Roadmap
 
 ## Cross-Platform Milestones
 
